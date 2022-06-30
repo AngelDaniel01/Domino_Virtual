@@ -8,7 +8,7 @@ namespace Domino_Virtual
         [STAThread]
         static void Main()
         {
-
+            // cambio de prueba
             Juego juego = new Juego();
             JugRandom jugRandom = new JugRandom();
             JugRandom jugRandom2 = new JugRandom();
