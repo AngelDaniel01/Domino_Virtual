@@ -405,7 +405,7 @@ namespace Domino_Virtual
                                 ficha.DrawImage(ResizeImage(image, size), PosDer.Item1, PosDer.Item2);
                             }
                         }
-                        //Thread.Sleep(1500);
+                        Thread.Sleep(1500);
                     }
 
                 }
