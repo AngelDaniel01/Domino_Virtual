@@ -6,81 +6,61 @@ using System.Threading.Tasks;
 
 namespace Domino_Virtual
 {
-    public enum TipoDeData
+    public enum EnumMaximoFicha
     {
-        Clasica,
-        Par
-    }
-
-    public enum CantidadDeJugadores
-    {
-        DosJugadores,
-        TresJugadores,
-        Cuatrojugadores
-    }
-    public enum MaximoFicha
-    {
-        Max6,
         Max9,
-        LibreMenorDe9
-
-    }
-    
-    public enum PuntuacionesFinales
-    {
-        Clasica,
-        DoblesDobles
-
-    }
-    public enum FormaDeAcabar
-    {
-        Clasica,
-        PaseConsecutivo
-    }
-    public enum OrdenDeLaJugada
-    {
-        Clasica,
-        InversaAlPasar
-    }
-    public enum TipoDeFicha
-    {
-        Clasica,
-        Color,
-        Emoji
+        Max6,
+        Entre6y9
     }
 
     public class Configuracion
     {
         public Configuracion()
         {
-            CantidadARepartir = 10;
-            MaximoFicha = 9;
-            PuntuacionesFinales = PuntuacionesFinales.Clasica;
-            FormaDeAcabar = FormaDeAcabar.Clasica;
-            OrdenDeLaJugada = OrdenDeLaJugada.Clasica;
-            Jugadores = new IJugador[2];
-            TipoDeData = TipoDeData.Clasica;
-            for (int i = 0; i < Jugadores.Length; i++)
-            {
-                Jugadores[i] = new JugRandom();
-            }
-            TipoDeFicha = TipoDeFicha.Clasica;
+            Jugadores = new List<IJugador>();
+            EstablecerValoresPredeterminados();
         }
 
 
 
-
-
-        public int MaximoFicha;
         public int CantidadARepartir;
-        public TipoDeData TipoDeData { get; set; }
-        public PuntuacionesFinales PuntuacionesFinales { get; set; }
-        public FormaDeAcabar FormaDeAcabar { get; set; }
-        public OrdenDeLaJugada OrdenDeLaJugada { get; set; }
-        public IJugador[] Jugadores { get; set; }
-        public TipoDeFicha TipoDeFicha { get; set; }
+        public IData Data { get; set; }
+        public EnumMaximoFicha EnumMaximoFicha { get; set; }
+        public int MaximoFichas { get; set; }
+        public IPuntuacionFinal PuntuacionesFinales { get; set; }
+        public IFormaDeAcabar FormaDeAcabar { get; set; }
+        public IOrdenJugada OrdenDeLaJugada { get; set; }
+        public ITipoDeFicha TipoDeFicha { get; set; }
+        public List<IJugador> Jugadores { get; set; }
+
+
+
+        public Dictionary<string, string> Predeterminados;
+
+        public void EstablecerValoresPredeterminados()
+        {
+            CantidadARepartir = 10;
+            MaximoFichas = 9;
+            Data = new Data_Clasica();
+            PuntuacionesFinales = new PuntuacionFinal_Clasica();
+            FormaDeAcabar = new FormaDeAcabar_Clasica();
+            OrdenDeLaJugada = new OrdenJugada_Clasica();
+             for (int i = 0; i < 4 ; i++)
+             {
+                Jugadores.Add(new JugRandom());
+             }
+            TipoDeFicha = new TipoDeFicha_Clasica();
+
+            Predeterminados = new Dictionary<string, string>();
+
+            Predeterminados.Add("MaximoFicha", Enum.GetName(typeof(EnumMaximoFicha), EnumMaximoFicha.Max9));
+            Predeterminados.Add("PuntuacionesFinales", typeof(PuntuacionFinal_Clasica).Name);
+            Predeterminados.Add("FormaDeAcabar", typeof(FormaDeAcabar_Clasica).Name);
+            Predeterminados.Add("OrdenDeLaJugada", typeof(OrdenJugada_Clasica).Name);
+            Predeterminados.Add("TipoDeFicha", typeof(TipoDeFicha_Clasica).Name);
+            Predeterminados.Add("Data", typeof(Data_Clasica).Name);
+
+        }
+
     }
-
-
-
 }

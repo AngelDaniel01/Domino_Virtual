@@ -11,23 +11,22 @@ namespace Domino_Virtual
         public Juego()
         {
             fichaList = new List<Ficha>();
-            jugadoresList = new List<IJugador>();
             tablero = new List<Ficha>();
             configuracion = new Configuracion();
-            sentido = 1;
-            pasesMesa = 0;
+            jugadoresList = configuracion.Jugadores;
+            Sentido = 1;
+            PasesMesa = 0;
         }
-        int pasesMesa;
-        int sentido;
+
         List<Ficha> fichaList;
         List<IJugador> jugadoresList;
         List<Ficha> tablero;
         Configuracion configuracion;
-        public int PasesMesa => pasesMesa;
-        public int Sentido => sentido;
+        public int PasesMesa { get; set; }
+        public int Sentido { get; set; }
         //Sentido = 1 es normal, Sentido = -1 es inverso
         public List<Ficha> FichasList => fichaList;
-        public List<IJugador> JugadoresList => jugadoresList;
+        public List<IJugador> Jugadores => jugadoresList;
         public List<Ficha> TableroList => tablero;
         public Configuracion Configuracion => configuracion;
 
@@ -63,6 +62,8 @@ namespace Domino_Virtual
             }
             return new Tuple<int, int>(izq, der);
         }
+
+
         public void Repartir(List<IJugador> jugadores, List<Ficha> listaFichas, int cantDFichasXJug)
         {
             Random random = new Random();
@@ -79,53 +80,45 @@ namespace Domino_Virtual
         }
         public void CargarJuego()
         {
-            IData data = configuracion.TipoDeData switch
-            {
-                TipoDeData.Clasica => new DataClasica(),
-                TipoDeData.Par => new DaraPar(),
-                _ => new DataClasica(),
-            };
-
-
-            data.FichaMax = configuracion.MaximoFicha;
+            IData data = configuracion.Data;
+            data.FichaMax = configuracion.MaximoFichas;
+            data.FichaList = new List<Ficha>();
+            tablero = new List<Ficha>();
             data.CrearData();
             fichaList = data.FichaList;
+            foreach (var jug in jugadoresList)
+            {
+                jug.Fichas = new List<Ficha>();
+            }
             Repartir(jugadoresList, fichaList, configuracion.CantidadARepartir);
         }
         public Ficha JuegaUnJugador(int jugToca)
         {
             IJugador jugador = jugadoresList[jugToca];
             Ficha fichaAPoner = new Ficha();
-            fichaAPoner = jugador.Jugar(LadosDisponibles(tablero).Item1, LadosDisponibles(tablero).Item2);
+            var ladosDisponibles = LadosDisponibles(tablero);
+            fichaAPoner = jugador.Jugar(ladosDisponibles.Item1, ladosDisponibles.Item2);
             if (fichaAPoner == null)
             {
-                pasesMesa++;
+                PasesMesa++;
                 return null;
             }
             else
             {
-                pasesMesa = 0;
+                PasesMesa = 0;
                 if (jugador.JugarPor == 0)
                 {
-                    if (tablero.Count > 0 && fichaAPoner.Minimo == tablero[0].Minimo)
+                    if (tablero.Count > 0 && fichaAPoner.Minimo == ladosDisponibles.Item1)
                     {
-                       // Ficha poner = new Ficha();
-                       // poner.Maximo = fichaAPoner.Minimo;
-                       // poner.Minimo = fichaAPoner.Maximo;
-                       // fichaAPoner = poner;
                         fichaAPoner.Virada = true;
                     }
                     tablero.Insert(0, fichaAPoner);
-                    
+
                 }
                 if (jugador.JugarPor == 1)
                 {
-                    if (tablero.Count > 0 && fichaAPoner.Maximo == tablero[tablero.Count - 1].Maximo)
+                    if (tablero.Count > 0 && fichaAPoner.Maximo == ladosDisponibles.Item2)
                     {
-                       // Ficha poner = new Ficha();
-                       // poner.Maximo = fichaAPoner.Minimo;
-                       // poner.Minimo = fichaAPoner.Maximo;
-                       // fichaAPoner = poner;
                         fichaAPoner.Virada = true;
                     }
                     tablero.Add(fichaAPoner);
@@ -135,9 +128,9 @@ namespace Domino_Virtual
         }
         public int JugadorAJugar(int anterior)
         {
-            if (sentido == 1)
+            if (Sentido == 1)
             {
-                return (anterior + sentido) % jugadoresList.Count();
+                return (anterior + Sentido) % jugadoresList.Count();
             }
             else
             {
@@ -145,177 +138,16 @@ namespace Domino_Virtual
                 {
                     return jugadoresList.Count() - 1;
                 }
-                return anterior - sentido;
+                return anterior - Sentido;
             }
         }
 
-        public void ComenzarJuego()
-        {
-            /* 
-             bool termino = false;*/
-            #region While(True)
-            while (true)
-            {
-                foreach (var jugador in jugadoresList)
-                {
 
-                    Ficha fichaAPoner = new Ficha();
-                    fichaAPoner = jugador.Jugar(LadosDisponibles(tablero).Item1, LadosDisponibles(tablero).Item2);
-                    if (fichaAPoner == null)
-                    {
-                        pasesMesa++;
-                    }
-                    /* if (fichaAPoner != null)
-                     {
-                         pasesMesa = 0;
-                         if (jugador.JugarPor == 0)
-                         {
-                             if (tablero.Count > 0 && fichaAPoner.Minimo == tablero[0].Minimo)
-                             {
-                                 Ficha poner = new Ficha();
-                                 poner.Maximo = fichaAPoner.Minimo;
-                                 poner.Minimo = fichaAPoner.Maximo;
-                                 fichaAPoner = poner;
-                                 fichaAPoner.Virada = true;
-                             }
-                             tablero.Insert(0, fichaAPoner);
 
-                         }
-                         if (jugador.JugarPor == 1)
-                         {
-                             if (tablero.Count > 0 && fichaAPoner.Maximo == tablero[tablero.Count - 1].Maximo)
-                             {
-                                 Ficha poner = new Ficha();
-                                 poner.Maximo = fichaAPoner.Minimo;
-                                 poner.Minimo = fichaAPoner.Maximo;
-                                 fichaAPoner = poner;
-                                 fichaAPoner.Virada = true;
-                             }
-                             tablero.Add(fichaAPoner);
 
-                         }
-                     }*/
-                    /*            if (FormaDeAcabarClasica(jugadoresList, jugador, pasesMesa))
-                                {
-                                    termino = true;
-                                    break;
-                                }
-                            }
 
-                            if (termino)
-                            {
-                                break;
-                            }*/
-                }
-            }
-            #endregion
-        }
-        #region FormasDeAcabar
-        public bool FormaDeAcabarClasica(List<IJugador> listJug, IJugador jugador, int pasesMesa)
-        {
-            if (pasesMesa >= listJug.Count || jugador.Fichas.Count == 0)
-            {
-                return true;
-            }
-            return false;
-        }
-        public bool FormaDeAcabarPaseConsecutivo(List<IJugador> listJug, IJugador jugador, int pasesMesa, int pasesJug)
-        {
-            if (pasesMesa >= listJug.Count || jugador.Fichas.Count == 0 || jugador.PasesConsecutivos >= pasesJug)
-            {
-                return true;
-            }
-            return false;
-        }
-        #endregion
 
-        #region PuntuacionesFinales
 
-        public int PuntuacionFinalClasica(List<IJugador> listJug)
-        {
-            int gano = -1;
-            int ganoDVerdad = 0;
-            int menor = int.MaxValue;
-            foreach (var jug in listJug)
-            {
-                gano++;
-                int a = 0;
-                foreach (var ficha in jug.Fichas)
-                {
-                    a += ficha.Maximo = ficha.Minimo;
-                }
-                if (a < menor)
-                {
-                    ganoDVerdad = gano;
-                    menor = a;
-                }
-            }
-            return ganoDVerdad;
-        }
-        public int PuntuacionFinalDoblesDobles(List<IJugador> listJug)
-        {
-            int gano = -1;
-            int ganoDVerdad = 0;
-            int menor = int.MaxValue;
-            foreach (var jug in listJug)
-            {
-                gano++;
-                int a = 0;
-                foreach (var ficha in jug.Fichas)
-                {
-                    if (ficha.Minimo == ficha.Maximo)
-                    {
-                        a += 2 * ficha.Minimo + 2 * ficha.Minimo;
-                    }
-                    else
-                    {
-                        a += ficha.Maximo + ficha.Minimo;
-                    }
-                }
-                if (a < menor)
-                {
-                    ganoDVerdad = gano;
-                    menor = a;
-                }
-            }
-            return ganoDVerdad;
-        }
-        #endregion
-
-        #region OrdenDeLaJugada
-        public void OrdenDeLaJugadaClasica()
-        {
-            // XD
-        }
-        public void OrdenDeLaJugadaInversaAlPasar(List<IJugador> listJug, Ficha nullidad, IJugador jugador, int n)
-        {
-            if (nullidad == null && jugador.PasesConsecutivos >= n)
-            {
-                sentido = -1;
-            }
-        }
-
-        #endregion
-
-        public void DetenerJuego(bool pausado)
-        {
-            while (pausado)
-            {
-                Thread.Sleep(10);
-            }
-        }
-        public void ReanudarJuego(bool pausado)
-        {
-            pausado = false;
-        }
-        public void GuardarJuego()
-        {
-
-        }
-        public void SalirDelJuego()
-        {
-
-        }
 
 
 

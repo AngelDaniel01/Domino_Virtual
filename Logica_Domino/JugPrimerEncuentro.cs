@@ -6,36 +6,33 @@ using System.Threading.Tasks;
 
 namespace Domino_Virtual
 {
-    public class JugPrimerEncuentro: IJugador
+    public class JugPrimerEncuentro : IJugador
     {
         public JugPrimerEncuentro()
         {
-            fichas = new List<Ficha>();
+            Fichas = new List<Ficha>();
         }
-        List<Ficha> fichas;
         public JugPrimerEncuentro(List<Ficha> fichas)
         {
-            this.fichas = fichas;
+            this.Fichas = fichas;
         }
-        public bool QuedanFichas => fichas.Count > 0;
-
-        public List<Ficha> Fichas => fichas;
-
+        public bool QuedanFichas => Fichas.Count > 0;
         public int JugarPor { get; set; }
         public int PasesConsecutivos { get; set; }
-
+        public string Nombre { get; set; }
+        public List<Ficha> Fichas { get; set; }
 
         public Ficha Jugar(int FichaIzq, int FichaDer)
         {
             if (FichaIzq == -1)
             {
                 PasesConsecutivos = 0;
-                Ficha ficha2 = fichas[0];
-                fichas.Remove(fichas[0]);
+                Ficha ficha2 = Fichas[0];
+                Fichas.Remove(Fichas[0]);
                 return ficha2;
             }
 
-            foreach (var ficha in fichas)
+            foreach (var ficha in Fichas)
             {
                 if (
                     ficha.Minimo == FichaIzq ||
@@ -45,18 +42,18 @@ namespace Domino_Virtual
                     PasesConsecutivos = 0;
                     JugarPor = 0;
                     Ficha ficha2 = ficha;
-                    fichas.Remove(ficha);
+                    Fichas.Remove(ficha);
                     return ficha2;
                 }
-                if(
+                if (
                     ficha.Minimo == FichaDer ||
-                    ficha.Maximo == FichaDer 
+                    ficha.Maximo == FichaDer
                     )
                 {
                     PasesConsecutivos = 0;
                     JugarPor = 1;
                     Ficha ficha2 = ficha;
-                    fichas.Remove(ficha);
+                    Fichas.Remove(ficha);
                     return ficha2;
                 }
             }

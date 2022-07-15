@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domino_Virtual
 {
-    public class DaraPar : IData
+    public class Data_Par : IData
     {
-        public DaraPar()
+        public Data_Par()
         {
             FichaList = new List<Ficha>();
         }
@@ -17,9 +17,9 @@ namespace Domino_Virtual
 
         public void CrearData()
         {
-            for (int i = 0; i <= FichaMax; i = +2)
+            for (int i = 0; i <= FichaMax; i += 2)
             {
-                for (int j = i; j <= FichaMax; j = +2)
+                for (int j = i; j <= FichaMax; j += 2)
                 {
                     Ficha fichaNew = new Ficha();
                     fichaNew.Minimo = i;

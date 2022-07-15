@@ -10,27 +10,24 @@ namespace Domino_Virtual
     {
         public JugBotaGorda()
         {
-            fichas = new List<Ficha>();
+            Fichas = new List<Ficha>();
         }
         public JugBotaGorda(List<Ficha> fichas)
         {
-            this.fichas = fichas;
-
         }
 
-        List<Ficha> fichas;
-        public bool QuedanFichas => fichas.Count > 0;
-        public List<Ficha> Fichas => fichas;
-
+        public bool QuedanFichas => Fichas.Count > 0;
         public int JugarPor { get; set; }
         public int PasesConsecutivos { get; set; }
+        public string Nombre { get; set; }
+        public List<Ficha> Fichas { get; set; }
 
         public Ficha Jugar(int FichaIzq, int FichaDer)
         {
             Ficha fichaFinal = null;
             if (FichaIzq == -1)
             {
-                foreach (var ficha in fichas)
+                foreach (var ficha in Fichas)
                 {
                     for (int i = 9; i < 0; i--)
                     {
@@ -39,14 +36,14 @@ namespace Domino_Virtual
                             PasesConsecutivos = 0;
                             Ficha ficha2 = new Ficha();
                             ficha2 = ficha;
-                            fichas.Remove(ficha);
+                            Fichas.Remove(ficha);
                             return ficha2;
                         }
                     }
                 }
             }
 
-            foreach (var ficha in fichas)
+            foreach (var ficha in Fichas)
             {
                 if (
                     ficha.Minimo == FichaDer ||

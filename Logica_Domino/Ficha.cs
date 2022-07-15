@@ -12,7 +12,6 @@ namespace Domino_Virtual
         public int Minimo { get; set; }
         public bool EsDoble { get; set; }
         public bool Virada { get; set; }
-        public bool Vertical { get; set; }
         public string Foto;
     }
 }

@@ -63,6 +63,16 @@ namespace Domino_Virtual.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _23194_azul_degradado {
+            get {
+                object obj = ResourceManager.GetObject("23194-azul-degradado", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap _619px_Domino_game {
             get {
                 object obj = ResourceManager.GetObject("619px-Domino_game", resourceCulture);
@@ -116,6 +126,16 @@ namespace Domino_Virtual.Properties {
         internal static System.Drawing.Bitmap dominos_wallpaper_preview {
             get {
                 object obj = ResourceManager.GetObject("dominos-wallpaper-preview", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pngtree_stream_live_cam_border_frame_design_png_image_6109153 {
+            get {
+                object obj = ResourceManager.GetObject("pngtree-stream-live-cam-border-frame-design-png-image_6109153", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

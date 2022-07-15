@@ -11,7 +11,8 @@ namespace Domino_Virtual
         public int PasesConsecutivos { get; set; }
         public Ficha Jugar(int FichaIzq, int FichaDer);
         public bool QuedanFichas { get; }
-        public List<Ficha> Fichas { get; }
+        public List<Ficha> Fichas { get; set; }
         public int JugarPor { get; set; }
+        public string Nombre { get; set; }
     }
 }

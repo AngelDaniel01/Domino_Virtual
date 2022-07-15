@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Domino_Virtual
 {
-    public class DataClasica : IData
+    public class Data_Clasica : IData
     {
-        public DataClasica()
+        public Data_Clasica()
         {
             FichaList = new List<Ficha>();
-            
         }
         public List<Ficha> FichaList { get; set; }
         public int FichaMax { get; set; }

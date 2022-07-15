@@ -8,18 +8,17 @@ namespace Domino_Virtual
 {
     public class JugMedioPensador : IJugador
     {
-        public JugMedioPensador(List<Ficha> fichas)
+        public JugMedioPensador()
         {
-            this.fichas = fichas;
-
+            Fichas = new List<Ficha>();
         }
 
-        List<Ficha> fichas;
-        public bool QuedanFichas => fichas.Count > 0;
-        public List<Ficha> Fichas => fichas;
+        public bool QuedanFichas => Fichas.Count > 0;
 
         public int JugarPor { get; set; }
         public int PasesConsecutivos { get; set; }
+        public string Nombre { get; set; }
+        public List<Ficha> Fichas { get; set ; }
 
         public Ficha Jugar(int FichaIzq, int FichaDer)
         {
@@ -30,7 +29,7 @@ namespace Domino_Virtual
             if (FichaIzq == -1)
             {
                 int[] valores = new int[10];
-                foreach (var ficha in fichas)
+                foreach (var ficha in Fichas)
                 {
                     for (int i = 0; i < valores.Length; i++)
                     {
@@ -45,19 +44,19 @@ namespace Domino_Virtual
                         aux = i;
                     }
                 }
-                foreach (var ficha in fichas)
+                foreach (var ficha in Fichas)
                 {
                     if (ficha.Maximo == aux || ficha.Minimo == aux)
                     {
                         Ficha ficha2 = ficha;
-                        fichas.Remove(ficha);
+                        Fichas.Remove(ficha);
                         return ficha2;
                     }
                 }
             }
 
 
-            foreach (var ficha in fichas)
+            foreach (var ficha in Fichas)
             {
                 if (ficha.Minimo == FichaIzq || ficha.Maximo == FichaIzq)
                 {
@@ -80,7 +79,7 @@ namespace Domino_Virtual
                 Fichas.Remove(organizadaIzq[0]);
                 return ficha2;
             }
-            if (organizadaDer == null)
+            if (organizadaDer.Count == 0)
             {
                 PasesConsecutivos++;
                 return null;
