@@ -66,7 +66,7 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "LaunchForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Inicio";
             this.Load += new System.EventHandler(this.LaunchForm_Load);
             this.ResumeLayout(false);
 
